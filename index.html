@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Encryption</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    #imageInput {
+        display: none;
+    }
+    label {
+        cursor: pointer;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+    }
+    #outputImage {
+        margin-top: 20px;
+        max-width: 100%;
+    }
+</style>
+</head>
+<body>
+<h1>Image Encryption</h1>
+<input type="file" id="imageInput" accept="image/*">
+<label for="imageInput">Upload Image</label>
+<div id="output"></div>
+<script>
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = function() {
+            const imageData = reader.result;
+            const encryptedData = encryptImage(imageData);
+            displayEncryptedImage(encryptedData);
+        }
+        reader.readAsDataURL(file);
+    });
+
+    function encryptImage(imageData) {
+        // Simple Caesar Cipher encryption for demonstration
+        const shift = 3; // Shift by 3 characters
+        let encryptedData = "";
+        for (let i = 0; i < imageData.length; i++) {
+            encryptedData += String.fromCharCode(imageData.charCodeAt(i) + shift);
+        }
+        return encryptedData;
+    }
+
+    function displayEncryptedImage(encryptedData) {
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = "<h2>Encrypted Image:</h2>";
+        const img = new Image();
+        img.onload = function() {
+            outputDiv.appendChild(img);
+        };
+        img.src = encryptedData;
+        img.id = "outputImage";
+    }
+</script>
+</body>
+</html>
